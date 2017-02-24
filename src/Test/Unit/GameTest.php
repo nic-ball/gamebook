@@ -18,6 +18,12 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/images/game.jpg', $game->getImagePath());
     }
 
+    public function testIsRecommended_With5_ReturnsTrue()
+    {
+        $game = $this->createMock('Game', ['getAverageScore']);
+        $game->method('getAverageScore')
+            ->will($this->returnValue(5));
 
-
+        $this->assertTrue($game->isRecommended());
+    }
 }
