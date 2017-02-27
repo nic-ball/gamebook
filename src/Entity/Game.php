@@ -4,9 +4,28 @@ class Game
 {
     protected $title;
     protected $imagePath;
-    protected $rating;
-    protected $getAverageScore;
+    protected $ratings;
 
+    public function getAverageScore()
+    {
+        $ratings = $this->getRatings();
+        $numRatings = count($ratings);
+
+        if ($numRatings == 0) {
+            return null;
+        }
+
+        $total = 0;
+        foreach ($ratings as $rating) {
+            $score = $rating->getScore();
+            if ($score === null) {
+                $numRatings--;
+                continue;
+            }
+            $total += $score;
+        }
+        return $total / $numRatings;
+    }
 
 
     public function isRecommended()
@@ -37,14 +56,14 @@ class Game
         $this->imagePath = $value;
     }
 
-    public function getRating()
+    public function getRatings()
     {
-        return $this->rating;
+        return $this->ratings;
     }
 
-    public function setRating($value)
+    public function setRatings($value)
     {
-        $this->rating = $value;
+        $this->ratings = $value;
     }
 
 
