@@ -11,14 +11,15 @@ class GameRepository
     {
         $this->pdo = new PDO(
             'mysql:host=localhost;dbname=gamebook_test',
-            'gamebook_user',
-            'mysupersecretpassword');
+            'root',
+            'Notorious_@82');
     }
+
 
     public function findById($id)
     {
         $statement = $this->pdo->prepare('SELECT * FROM game WHERE id = ?');
-        $statement->execute($id);
+        $statement->execute([$id]);
         $game = $statement->fetchObject('Game');
         return $game;
     }
