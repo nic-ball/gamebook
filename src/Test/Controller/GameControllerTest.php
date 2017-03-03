@@ -58,7 +58,9 @@ class GameControllerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/', $response->getHeaderLine('Location'));
 
         $pdo = new PDO(
-            'mysql:host=localhost;dbname=gamebook_test', 'admin', null);
+            'mysql: 
+            host=localhost;dbname=gamebook_test',
+            'admin', null);
         $statement = $pdo->prepare('SELECT * FROM rating');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
