@@ -6,15 +6,16 @@ require __DIR__ . "/../Entity/Rating.php";
 class GameRepository
 {
     protected $pdo;
+    protected $user;
+
 
     public function __construct()
     {
         $this->pdo = new PDO(
-            'mysql:host=localhost;dbname=gamebook_test',
-            'root',
-            'Notorious_@82');
+            'mysql:
+            host=localhost;dbname=gamebook_test',
+            'admin', null);
     }
-
 
     public function findById($id)
     {
