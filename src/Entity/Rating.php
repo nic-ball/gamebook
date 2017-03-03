@@ -6,6 +6,13 @@ class rating
     protected $user;
     protected $score;
 
+    public function toArray()
+    {
+        return [
+            'score' => $this->getScore(),
+        ];
+    }
+
     /**
      * @return mixed
      */

@@ -11,6 +11,20 @@ class GameControllerTest extends PHPUnit_Framework_TestCase
         $this->assertCount(6, $response->filter('ul > li'));
     }
 
+    public function tstApiGames_WithUser_Returns6Items()
+    {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', 'http://gamebook.dev/api-games.php', [
+            'json' => [
+                'user' => '1'
+            ],
+        ]);
+
+        $json = $response->getBody()->getContents();
+        $this->assertJsonStringEqualsJsonString(
+            file_get_contents(__DIR__.'api-games-user.json'), $json);
+    }
+
     public function testAddRating_WithGet_HasEmptyForm()
     {
         $client = new Client();
@@ -29,16 +43,22 @@ class GameControllerTest extends PHPUnit_Framework_TestCase
             'http://gamebook.dev/add-rating.php?game=1',
             [
                 'allow_redirects' => false,
-                'form_params' => [
-                    'score' => '5'
+                'multipart' => [
+                    [
+                    'name' => 'score',
+                    'contents' => '5',
+                ],
+                [
+                    'name' => 'screenshot',
+                    'contents' => fopen(__DIR__.'/screenshot.jpg', 'r'),
+                    ]
                 ]
             ]);
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals('/', $response->getHeaderLine('Location'));
 
         $pdo = new PDO(
-            'mysql:
-            host=localhost;dbname=gamebook_test', 'admin', null);
+            'mysql:host=localhost;dbname=gamebook_test', 'admin', null);
         $statement = $pdo->prepare('SELECT * FROM rating');
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -49,6 +69,9 @@ class GameControllerTest extends PHPUnit_Framework_TestCase
             'game_id' => '1',
             'score' => '5',
         ], $result[0]);
+
+        $this->assertFileExists(
+            __DIR__.'/../../../web/screenshots/1-1.jpg');
     }
 
 }
