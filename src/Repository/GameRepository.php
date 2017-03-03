@@ -6,8 +6,6 @@ require __DIR__ . "/../Entity/Rating.php";
 class GameRepository
 {
     protected $pdo;
-    protected $user;
-
 
     public function __construct()
     {
